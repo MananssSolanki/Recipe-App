@@ -14,6 +14,7 @@ function CategoriesScreen({ navigation }) {
             navigation.navigate('MealsOverView' , {
                 categoryId : itemData.item.id,
             } );
+            
         }
 
         return (

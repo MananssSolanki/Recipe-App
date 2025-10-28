@@ -1,24 +1,45 @@
-import { MEALS } from "../data/dummy-data";
-import { View,Text,StyleSheet , FlatList } from "react-native";
-import {useRoute} from '@react-navigation/native'
+import { CATEGORIES, MEALS } from "../data/dummy-data";
+import { View, Text, StyleSheet, FlatList } from "react-native";
+import { useRoute } from '@react-navigation/native'
 import MealItem from "../components/MealItem";
+import Category from "../models/category";
+import { useEffect } from "react";
 
-function MealsOverViewScreen({route}){
-    
+function MealsOverViewScreen({ route, navigation }) {
+
     const catId = route.params.categoryId;
 
-    const displayedMeals = MEALS.filter((mealItem) =>{
+    const displayedMeals = MEALS.filter((mealItem) => {
         return mealItem.categoryIds.indexOf(catId) >= 0;
     });
 
-    function renderMealItem(itemData){
+    useEffect(() => {
+        const categoryTitle = CATEGORIES.find((category) => category.id === catId).title;
+
+        navigation.setOptions({
+            title: categoryTitle
+        })
+    }, [catId, navigation]);
+
+
+
+    function renderMealItem(itemData) {
+        const item = itemData.item;
+        const mealItemProps = {
+            id : item.id,
+            title: item.title,
+            imageUrl: item.imageUrl,
+            affordability: item.affordability,
+            compelexity: item.compelexity,
+            duration: item.duration
+        };
         return (
-            <MealItem title={itemData.item.title} />
+            <MealItem  {...mealItemProps} />
         );
     }
 
 
-    return(
+    return (
         <View style={styles.container}>
             <FlatList
                 data={displayedMeals}
@@ -30,10 +51,10 @@ function MealsOverViewScreen({route}){
 }
 
 export default MealsOverViewScreen;
- 
+
 const styles = StyleSheet.create({
-    container:{
-        flex : 1,
-        padding:15
+    container: {
+        flex: 1,
+        padding: 15
     }
 })
