@@ -7,6 +7,7 @@ function MealItem({ id, title, imageUrl, duration, complexity = '', affordabilit
     const navigation = useNavigation();
 
     function selectMealItemHandler() {
+        console.log("Navigate From One Activity to another")
         navigation.navigate('MealDetails', {
             mealId: id,
         });
